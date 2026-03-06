@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0/dist/apexcharts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌟 Daily Tracker</h1>
+    </header>
+
+    <!-- Streak warning (shown when streak at risk) -->
+    <div class="streak-warning hidden" id="streak-warning"></div>
+
+    <!-- Goal ring + today summary -->
+    <section class="card goal-card">
+      <div class="goal-ring-wrap">
+        <svg viewBox="0 0 120 120" class="goal-svg">
+          <circle class="ring-bg"   cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50" id="ring-fill"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-value" id="ring-value">0</div>
+          <div class="ring-unit">min</div>
+        </div>
+      </div>
+      <div class="goal-info">
+        <div class="goal-heading">Today's Activity</div>
+        <div id="goal-breakdown" class="goal-breakdown"></div>
+        <div class="goal-target-row">
+          <span id="goal-target-label">Goal: 30 min</span>
+          <button class="btn-edit-goal" id="btn-edit-goal">Edit</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Log Form -->
+    <section class="card">
+      <h2>Log Activity</h2>
+      <div class="activity-tabs">
+        <button type="button" class="activity-tab active" data-activity="reading">📚 Reading</button>
+        <button type="button" class="activity-tab" data-activity="swimming">🏊 Swimming</button>
+        <button type="button" class="activity-tab" data-activity="walking">🚶 Walking</button>
+      </div>
+      <form id="log-form">
+        <div class="form-row">
+          <div class="form-group" id="book-group">
+            <label for="book-name" id="book-label">Book Name</label>
+            <input type="text" id="book-name" placeholder="Enter book title...">
+          </div>
+          <div class="form-group">
+            <label for="read-date">Date</label>
+            <input type="date" id="read-date" required>
+          </div>
+          <div class="form-group">
+            <label for="minutes">Minutes</label>
+            <input type="number" id="minutes" min="1" max="1440" placeholder="e.g. 30" required>
+          </div>
+          <button type="submit" class="btn-add">Add</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="daily">Daily</button>
+      <button class="tab" data-tab="monthly">Monthly</button>
+      <button class="tab" data-tab="progress">Progress</button>
+      <button class="tab" data-tab="log">All Sessions</button>
+    </div>
+
+    <!-- Daily Summary -->
+    <section class="card tab-content active" id="tab-daily">
+      <div class="section-header">
+        <h2>Daily Summary</h2>
+        <input type="month" id="daily-month-filter">
+      </div>
+      <div id="daily-list" class="summary-list"></div>
+    </section>
+
+    <!-- Monthly Summary -->
+    <section class="card tab-content" id="tab-monthly">
+      <div class="section-header">
+        <h2>Monthly Summary</h2>
+        <input type="month" id="monthly-chart-filter">
+      </div>
+      <div id="monthly-chart"></div>
+      <div class="chart-divider"></div>
+      <h2>All Months</h2>
+      <div id="monthly-list" class="summary-list"></div>
+    </section>
+
+    <!-- Progress -->
+    <section class="card tab-content" id="tab-progress">
+      <div id="stat-cards" class="stat-cards"></div>
+
+      <div class="section-header" style="margin-top:24px">
+        <h2>Activity Over Time</h2>
+        <div class="range-btns">
+          <button class="range-btn active" data-range="30">30d</button>
+          <button class="range-btn" data-range="90">3m</button>
+          <button class="range-btn" data-range="0">All</button>
+        </div>
+      </div>
+      <div id="progress-chart"></div>
+
+      <div class="chart-divider"></div>
+      <h2>Achievements</h2>
+      <div id="badges-grid" class="badges-grid"></div>
+    </section>
+
+    <!-- All Sessions -->
+    <section class="card tab-content" id="tab-log">
+      <h2>All Sessions</h2>
+      <div id="sessions-list" class="sessions-list"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
